@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">    
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fashion Niche Website</title>
+<style>
+:root{--bg:#f4f4f4;--card:#fff;--text:#0f172a;--muted:#6b7280;--accent:#111}
+[data-theme='dark']{--bg:#0b1220;--card:#071022;--text:#eef2ff;--muted:#94a3b8;--accent:#7dd3fc}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:linear-gradient(90deg,var(--card),rgba(255,255,255,0.02));backdrop-filter:blur(6px);position:fixed;top:0;left:0;right:0;z-index:20}
+brand{display:flex;align-items:center;gap:12px}
+.logo{width:110px}
+nav{display:flex;gap:14px;align-items:center}
+nav a{cursor:pointer;text-decoration:none;color:var(--text);opacity:.95}
+.container{padding-top:80px}
+.hero{height:60vh;background-image:url('https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?auto=format&fit=crop&w=1400&q=60');background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#fff}
+.hero h1{font-size:48px;margin:0;letter-spacing:1px;text-shadow:0 6px 20px rgba(0,0,0,.45);animation:fadeUp .8s ease}
+.hero p{margin-top:12px;font-size:18px;opacity:.95}
+.section{padding:48px 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 20px rgba(2,6,23,0.06);transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.12)}
+.card img{width:100%;height:220px;object-fit:cover;border-radius:8px}
+.card h3{margin:10px 0 6px;font-size:16px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.toolbar{display:flex;gap:8px;align-items:center}
+.overlay{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;z-index:30}
+.modal{width:95%;max-width:920px;background:var(--card);padding:20px;border-radius:12px;animation:pop .18s ease}
+.row{display:flex;gap:12px}
+.col{flex:1}
+.detail-img{width:100%;height:360px;object-fit:cover;border-radius:10px}
+.input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
+.small{font-size:13px;color:var(--muted)}
+.cart-badge{background:#ef4444;color:#fff;padding:4px 8px;border-radius:999px;font-size:13px}
+.cart-items{max-width:800px;margin:16px auto;display:flex;flex-direction:column;gap:12px}
+.cart-item{display:flex;align-items:center;gap:12px;background:var(--card);padding:10px;border-radius:10px}
+.cart-item img{width:70px;height:70px;object-fit:cover;border-radius:8px}
+.admin-panel{max-width:900px;margin:0 auto;display:flex;gap:20px;align-items:flex-start}
+.upload-box{background:var(--card);padding:16px;border-radius:10px;width:320px}
+.table{background:var(--card);padding:12px;border-radius:10px}
+.theme-toggle{padding:8px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);cursor:pointer}
+@media(max-width:860px){.row{flex-direction:column}.detail-img{height:240px}}
+@keyframes pop{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeUp{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand" onclick="scrollToSection('home')">
+<img class="logo" src="https://marketplace.canva.com/EAGTpHJevAg/1/0/1600w/canva-brown-minimalistic-abstract-fashion-brand-logo-ABoOPrH">
+</div>
+<nav>
+<a onclick="scrollToSection('home')">Home</a>
+<a onclick="scrollToSection('about')">About</a>
+<a onclick="scrollToSection('gallery')">Gallery</a>
+<a onclick="scrollToSection('contact')">Contact</a>
+<a onclick="scrollToSection('dashboard')">Dashboard</a>
+<a onclick="scrollToSection('adminPanel')">Admin</a>
+<a onclick="scrollToSection('cart')">Cart <span id="cartCount" class="cart-badge">0</span></a>
+<button class="theme-toggle" id="themeBtn">Dark</button>
+<a id="openLogin">Login</a>
+</nav>
+</header>
+<main class="container">
+<section id="home" class="hero">
+<h1>Fashion Niche Brand</h1>
+<p>Exclusive Styles • Premium Quality • Trendsetting Designs</p>
+<button class="btn" id="openRegister">Shop Now</button>
+</section>
+<section id="about" class="section">
+<h2>About Us</h2>
+<p class="small">We craft contemporary apparel with an emphasis on comfort and sustainability. Each collection blends modern silhouettes with timeless materials.</p>
+</section>
+<section id="gallery" class="section">
+<h2>Shop</h2>
+<div id="products" class="grid"></div>
+</section>
+<section id="contact" class="section">
+<h2>Contact</h2>
+<form onsubmit="event.preventDefault();alert('Message sent (demo)')">
+<input class="input" placeholder="Full Name">
+<input class="input" placeholder="Email">
+<textarea class="input" rows="4" placeholder="Message"></textarea>
+<button class="btn" type="submit">Send Message</button>
+</form>
+</section>
+<section id="dashboard" class="section">
+<h2>Dashboard</h2>
+<p class="small">Welcome back. Manage your profile, view orders and saved items.</p>
+<div class="table">
+<h3>Orders</h3>
+<ul id="orderList" class="small"></ul>
+</div>
+</section>
+<section id="adminPanel" class="section">
+<h2>Admin Panel</h2>
+<div class="admin-panel">
+<div class="upload-box">
+<h3>Add Product</h3>
+<input id="pName" class="input" placeholder="Product name">
+<input id="pPrice" class="input" placeholder="Price">
+<input id="pImage" class="input" placeholder="Image URL">
+<button class="btn" id="addProductBtn">Add Product</button>
+</div>
+<div class="table">
+<h3>Product List</h3>
+<table id="adminTable" style="width:100%;border-collapse:collapse">
+<thead><tr><th style="text-align:left">Name</th><th>Price</th><th>Action</th></tr></thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="cart" class="section">
+<h2>Your Cart</h2>
+<div id="cartItems" class="cart-items"></div>
+<div style="max-width:800px;margin:20px auto;text-align:right">
+<div id="cartTotal" class="small">Total: $0</div>
+<button class="btn" id="checkoutBtn">Checkout</button>
+</div>
+</section>
+</main>
+<div class="overlay" id="overlay">
+<div class="modal" id="productModal">
+<div class="row">
+<div class="col">
+<img id="modalImg" class="detail-img">
+</div>
+<div class="col">
+<h2 id="modalTitle"></h2>
+<p id="modalPrice" class="small"></p>
+<p id="modalDesc" class="small"></p>
+<div style="margin-top:20px">
+<input id="qty" class="input" value="1" type="number" min="1">
+<button class="btn" id="addToCartBtn">Add to Cart</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="loginOverlay">
+<div class="modal" style="max-width:420px">
+<h2 id="authTitle">Login</h2>
+<input id="authName" class="input" placeholder="Full name (for register)" style="display:none">
+<input id="authEmail" class="input" placeholder="Email">
+<input id="authPass" class="input" placeholder="Password" type="password">
+<div style="display:flex;gap:10px;margin-top:12px">
+<button class="btn" id="authBtn">Login</button>
+<button class="toggle" id="authToggle">Switch to Register</button>
+</div>
+</div>
+</div>
+<div class="overlay" id="checkoutOverlay">
+<div class="modal" style="max-width:420px">
+<h2>Payment</h2>
+<p class="small" id="payAmount">Amount: $0</p>
+<input id="cardName" class="input" placeholder="Name on card">
+<input id="cardNumber" class="input" placeholder="Card number">
+<div style="display:flex;gap:8px;margin-top:8px">
+<input id="cardExp" class="input" placeholder="MM/YY">
+<input id="cardCvv" class="input" placeholder="CVV">
+</div>
+<button class="btn" id="payBtn">Pay</button>
+</div>
+</div>
+<script>
+let products=[{id:1,name:'Black Hoodie',price:49,image:'https://images.unsplash.com/photo-1520975918319-53ad0d4c58a2?auto=format&fit=crop&w=800&q=60',desc:'Cozy oversized hoodie'},{id:2,name:'Classic Jacket',price:79,image:'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=60',desc:'Timeless street jacket'},{id:3,name:'White Tee',price:29,image:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=60',desc:'Soft cotton t-shirt'}]
+let cart=[]
+function renderProducts(){const el=document.getElementById('products');el.innerHTML='';products.forEach(p=>{const card=document.createElement('div');card.className='card';card.innerHTML=`<img src="${p.image}"><h3>${p.name}</h3><p class="small">$${p.price}</p><div style="display:flex;gap:8px;margin-top:10px"><button class="btn" onclick="openProduct(${p.id})">View</button><button class="btn" onclick="addToCart(${p.id},1)">Add</button></div>`;el.appendChild(card)})
+updateAdminTable()}
+function openProduct(id){const p=products.find(x=>x.id===id);document.getElementById('modalImg').src=p.image;document.getElementById('modalTitle').textContent=p.name;document.getElementById('modalPrice').textContent='$'+p.price;document.getElementById('modalDesc').textContent=p.desc;document.getElementById('qty').value=1;document.getElementById('overlay').style.display='flex';}
+function closeOverlay(){document.getElementById('overlay').style.display='none'}
+function addToCart(id,qty=1){const p=products.find(x=>x.id===id);const existing=cart.find(c=>c.id===id);if(existing){existing.qty+=qty}else{cart.push({id:p.id,name:p.name,price:p.price,image:p.image,qty:qty})}renderCart();document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0)}
+function renderCart(){const el=document.getElementById('cartItems');el.innerHTML='';cart.forEach(item=>{const node=document.createElement('div');node.className='cart-item';node.innerHTML=`<img src="${item.image}"><div style="flex:1"><strong>${item.name}</strong><div class="small">$${item.price} × ${item.qty}</div></div><div style="text-align:right"><button class="btn" onclick="changeQty(${item.id},1)">+</button><button class="btn" onclick="changeQty(${item.id},-1)">-</button><div style="margin-top:8px"><button class="btn" onclick="removeFromCart(${item.id})">Remove</button></div></div>`;el.appendChild(node)})
+const total=cart.reduce((s,i)=>s+i.price*i.qty,0);document.getElementById('cartTotal').textContent='Total: $'+total;document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0)}
+function changeQty(id,delta){const item=cart.find(c=>c.id===id);if(!item)return;item.qty+=delta;if(item.qty<1)removeFromCart(id);renderCart()}
+function removeFromCart(id){cart=cart.filter(c=>c.id!==id);renderCart()}
+document.getElementById('addToCartBtn').addEventListener('click',()=>{const title=document.getElementById('modalTitle').textContent;const p=products.find(x=>x.name===title);const qty=parseInt(document.getElementById('qty').value)||1;addToCart(p.id,qty);closeOverlay();})
+function updateAdminTable(){const tbody=document.querySelector('#adminTable tbody');tbody.innerHTML='';products.forEach(p=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${p.name}</td><td style="text-align:center">$${p.price}</td><td style="text-align:center"><button class="btn" onclick="removeProduct(${p.id})">Delete</button></td>`;tbody.appendChild(tr)})}
+function removeProduct(id){products=products.filter(p=>p.id!==id);renderProducts()}
+document.getElementById('addProductBtn').addEventListener('click',()=>{const name=document.getElementById('pName').value;const price=parseFloat(document.getElementById('pPrice').value)||0;const image=document.getElementById('pImage').value||'https://images.unsplash.com/photo-1520975918319-53ad0d4c58a2?auto=format&fit=crop&w=800&q=60';if(!name)return;const id=products.length?Math.max(...products.map(p=>p.id))+1:1;products.push({id,name,price,image,desc:'New product'});document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pImage').value='';renderProducts()})
+document.getElementById('openLogin').addEventListener('click',()=>document.getElementById('loginOverlay').style.display='flex')
+let authMode='login'
+document.getElementById('authToggle').addEventListener('click',()=>{authMode=authMode==='login'?'register':'login';document.getElementById('authTitle').textContent=authMode==='login'?'Login':'Register';document.getElementById('authName').style.display=authMode==='login'?'none':'block';document.getElementById('authBtn').textContent=authMode==='login'?'Login':'Register'})
+document.getElementById('authBtn').addEventListener('click',()=>{document.getElementById('loginOverlay').style.display='none';alert(authMode==='login'?'Signed in (demo)':'Account created (demo)')})
+document.getElementById('checkoutBtn').addEventListener('click',()=>{const total=cart.reduce((s,i)=>s+i.price*i.qty,0);document.getElementById('payAmount').textContent='Amount: $'+total;document.getElementById('checkoutOverlay').style.display='flex'})
+document.getElementById('payBtn').addEventListener('click',()=>{document.getElementById('checkoutOverlay').style.display='none';cart=[];renderCart();alert('Payment successful (demo)')})
+let theme='light'
+document.getElementById('themeBtn').addEventListener('click',()=>{theme=theme==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',theme==='dark'?'dark':'');document.getElementById('themeBtn').textContent=theme==='dark'?'Light':'Dark'})
+document.addEventListener('click',e=>{if(e.target.classList.contains('overlay')){e.target.style.display='none'}})
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+renderProducts();
+</script>
+</body>
+</html>
